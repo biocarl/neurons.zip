@@ -1,150 +1,177 @@
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>markdown-wasm demo</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="stylesheet" href="https://rsms.me/raster/raster.css?v=8">
-  <script type="text/javascript" src="markdown.js"></script>
-  <script type="text/javascript" async src="highlight.js"></script>
-  <style type="text/css">
+    <meta charset="utf-8">
+    <title>markdown-wasm demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://rsms.me/raster/raster.css?v=8">
+    <script type="text/javascript" src="markdown.js"></script>
+    <script type="text/javao<link rel=" apple-touch-icon sizes="57x57" href="/favicon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/favicon-144x144.png">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    script" async src="highlight.js"></script>
+    <style type="text/css">
 
-:root {
-  --fontSize: 14px;
-}
+        :root {
+            --fontSize: 14px;
+        }
 
-c.label { font-weight:500; letter-spacing:0; color:#999; }
+        c.label {
+            font-weight: 500;
+            letter-spacing: 0;
+            color: #999;
+        }
 
-c.input, c.output {
-  max-width:50vw;
-}
+        c.input, c.output {
+            max-width: 50vw;
+        }
 
-c.textarea {
-  display: flex;
-  justify-content: stretch;
-}
-c.textarea textarea {
-  flex: 1 1 auto;
-  min-height: 50vh;
-  border: 2px solid black;
-  border-radius: 3px;
-  padding: 1rem;
-  font-size: 14px;
-}
-c.textarea textarea:focus {
-  outline: none;
-  border-color: var(--blue);
-}
+        c.textarea {
+            display: flex;
+            justify-content: stretch;
+        }
 
-blockquote {
-  padding-left: var(--lineHeight);
-  border-left: 2px solid #ccc;
-}
+        c.textarea textarea {
+            flex: 1 1 auto;
+            min-height: 50vh;
+            border: 2px solid black;
+            border-radius: 3px;
+            padding: 1rem;
+            font-size: 14px;
+        }
 
-h1 > a.anchor,
-h2 > a.anchor,
-h3 > a.anchor,
-h4 > a.anchor,
-h5 > a.anchor,
-h6 > a.anchor {
-  display: inline-block;
-  float: left;
-  height: 1.2em;
-  width: 1em;
-  margin-left: -1em;
-  position: relative;
-  outline: none;
-}
-/*.anchor:target { background: yellow; }*/
-h1 > a.anchor:before,
-h2 > a.anchor:before,
-h3 > a.anchor:before,
-h4 > a.anchor:before,
-h5 > a.anchor:before,
-h6 > a.anchor:before {
-  visibility: hidden;
-  position: absolute;
-  opacity: 0.2;
-  right:0;
-  top:0;
-  width:  1em;
-  font-weight:300;
-  line-height: inherit;
-  content: ""; /* U+E08F */
-  text-align: center;
-}
-h1 > a.anchor:hover:before,
-h2 > a.anchor:hover:before,
-h3 > a.anchor:hover:before,
-h4 > a.anchor:hover:before,
-h5 > a.anchor:hover:before,
-h6 > a.anchor:hover:before {
-  visibility: visible;
-  opacity:0.8;
-}
-h1 > a.anchor:focus:before,
-h2 > a.anchor:focus:before,
-h3 > a.anchor:focus:before,
-h4 > a.anchor:focus:before,
-h5 > a.anchor:focus:before,
-h6 > a.anchor:focus:before,
-h1:hover .anchor:before,
-h2:hover .anchor:before,
-h3:hover .anchor:before,
-h4:hover .anchor:before,
-h5:hover .anchor:before,
-h6:hover .anchor:before {
-  visibility: visible;
-}
+        c.textarea textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
 
-  </style>
+        blockquote {
+            padding-left: var(--lineHeight);
+            border-left: 2px solid #ccc;
+        }
+
+        h1 > a.anchor,
+        h2 > a.anchor,
+        h3 > a.anchor,
+        h4 > a.anchor,
+        h5 > a.anchor,
+        h6 > a.anchor {
+            display: inline-block;
+            float: left;
+            height: 1.2em;
+            width: 1em;
+            margin-left: -1em;
+            position: relative;
+            outline: none;
+        }
+
+        /*.anchor:target { background: yellow; }*/
+        h1 > a.anchor:before,
+        h2 > a.anchor:before,
+        h3 > a.anchor:before,
+        h4 > a.anchor:before,
+        h5 > a.anchor:before,
+        h6 > a.anchor:before {
+            visibility: hidden;
+            position: absolute;
+            opacity: 0.2;
+            right: 0;
+            top: 0;
+            width: 1em;
+            font-weight: 300;
+            line-height: inherit;
+            content: ""; /* U+E08F */
+            text-align: center;
+        }
+
+        h1 > a.anchor:hover:before,
+        h2 > a.anchor:hover:before,
+        h3 > a.anchor:hover:before,
+        h4 > a.anchor:hover:before,
+        h5 > a.anchor:hover:before,
+        h6 > a.anchor:hover:before {
+            visibility: visible;
+            opacity: 0.8;
+        }
+
+        h1 > a.anchor:focus:before,
+        h2 > a.anchor:focus:before,
+        h3 > a.anchor:focus:before,
+        h4 > a.anchor:focus:before,
+        h5 > a.anchor:focus:before,
+        h6 > a.anchor:focus:before,
+        h1:hover .anchor:before,
+        h2:hover .anchor:before,
+        h3:hover .anchor:before,
+        h4:hover .anchor:before,
+        h5:hover .anchor:before,
+        h6:hover .anchor:before {
+            visibility: visible;
+        }
+
+    </style>
 </head>
 <body>
-    <h1 style="text-align: center; color: hotpink; font-size: 4em;padding-bottom: 1em">TIL</h1>
-    <c class="output" id="html-output">
-      <div title="Parsing file">...</div>
-    </c>
+<h1 style="text-align: center; color: hotpink; font-size: 4em;padding-bottom: 1em">TIL</h1>
+<c class="output" id="html-output">
+    <div title="Parsing file">...</div>
+</c>
 <script type="text/javascript">
 
-// await the loading of the web assembly module
-window["markdown"].ready.then(markdown => {
+    // await the loading of the web assembly module
+    window["markdown"].ready.then(markdown => {
 
-const inputEl = document.getElementById("markdown-input")
-const outputEl = document.getElementById("html-output")
-let hljsTimer
+        const inputEl = document.getElementById("markdown-input")
+        const outputEl = document.getElementById("html-output")
+        let hljsTimer
 
-async function update() {
-    const url = "https://raw.githubusercontent.com/biocarl/til-biocarl/master/README.md"
-    let source = await (await fetch(url)).text();
-    const pattern = /---/; // The pattern to match
-    const startIndex = source.search(pattern);
-    const sourceWithoutHeader = source.slice(startIndex + 3);
+        async function update() {
+            const url = "https://raw.githubusercontent.com/biocarl/til-biocarl/master/README.md"
+            let source = await (await fetch(url)).text();
+            const pattern = /---/; // The pattern to match
+            const startIndex = source.search(pattern);
+            const sourceWithoutHeader = source.slice(startIndex + 3);
 
-    html = markdown.parse(sourceWithoutHeader, {
-        parseFlags: markdown.ParseFlags.DEFAULT | markdown.ParseFlags.NO_HTML,
-    })
-    outputEl.innerHTML = html
-    updateCodeHighlight()
-}
+            html = markdown.parse(sourceWithoutHeader, {
+                parseFlags: markdown.ParseFlags.DEFAULT | markdown.ParseFlags.NO_HTML,
+            })
+            outputEl.innerHTML = html
+            updateCodeHighlight()
+        }
 
-function updateCodeHighlight() {
-  clearTimeout(hljsTimer)
-  if (typeof hljs == "undefined") {
-    hljsTimer = setTimeout(updateCodeSyntaxHighlighting, 500)
-    return
-  }
-  document.querySelectorAll('pre code[class^="language-"]').forEach(block => {
-    hljs.highlightBlock(block)
-  })
-}
+        function updateCodeHighlight() {
+            clearTimeout(hljsTimer)
+            if (typeof hljs == "undefined") {
+                hljsTimer = setTimeout(updateCodeSyntaxHighlighting, 500)
+                return
+            }
+            document.querySelectorAll('pre code[class^="language-"]').forEach(block => {
+                hljs.highlightBlock(block)
+            })
+        }
 
-update()
+        update()
 
 // load the markdown module to make it playable in the browser console
-console.log("markdown module API:", markdown)
+        console.log("markdown module API:", markdown)
 
-})</script>
+    })</script>
 <link rel="stylesheet" href="highlight.css">
 </body>
 </html>
