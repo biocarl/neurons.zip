@@ -115,7 +115,7 @@
     </style>
 </head>
 <body>
-<h1 style="text-align: center; color: hotpink; font-size: 4em;padding-bottom: 1em">TIL</h1>
+<h1 style="text-align: center; color: hotpink; font-size: 4em;padding-bottom: 1em;cursor: pointer" onclick="window.location = document.URL.split('#')[0]">TIL</h1>
 <c class="output" id="html-output">
     <div title="Parsing file">...</div>
 </c>
@@ -124,26 +124,123 @@
     // await the loading of the web assembly module
     window["markdown"].ready.then(markdown => {
 
-        const inputEl = document.getElementById("markdown-input")
-        const outputEl = document.getElementById("html-output")
-        let hljsTimer
+        const outputEl = document.getElementById("html-output");
+        let hljsTimer;
+
 
         async function update() {
-            const url = "https://raw.githubusercontent.com/biocarl/til-biocarl/master/README.md"
-            let source = await (await fetch(url)).text();
-            const pattern = /---/; // The pattern to match
-            const startIndex = source.search(pattern);
-            const sourceWithoutHeader = source.slice(startIndex + 3);
+            let hostname = window.location.hostname;
+            let isLocal = hostname === "localhost";
+            // Local testing
+            if(isLocal){
+                console.log("💾 Local development");
+                hostname = "biocarl.neurons.zip";
+            }
 
-            html = markdown.parse(sourceWithoutHeader, {
+            // slicing of @ (root+TDL)
+            const subdomains = hostname.split('.').slice(0, -2);
+
+            if(subdomains.length === 0){
+                console.error("No user supplied!");
+                return;
+            }
+
+            if(subdomains.length > 2){
+                console.error("Only [tag].[user].neurons.zip allowed as url!");
+                return;
+            }
+
+            if(subdomains.length !== 1){
+                console.error("Currently no tags supported, only username!");
+                return;
+            }
+
+            const username = subdomains[subdomains.length -1];
+            let url = "https://raw.githubusercontent.com/"+username+"/til-biocarl/master/README.md"
+
+            // Local testing
+            if(isLocal){
+                url = "tester.txt";
+            }
+
+            let source = await (await fetch(url)).text();
+            if(source.startsWith("404")){
+                console.error("A repository of the name neurons.zip for user '"+ username+"' in [user].neurons.zip does not exist")
+            }
+
+            const sourceToParse = filterSource(source, getAnchor());
+
+            html = markdown.parse(sourceToParse, {
                 parseFlags: markdown.ParseFlags.DEFAULT | markdown.ParseFlags.NO_HTML,
             })
             outputEl.innerHTML = html
 
-            // Update anchor based rendered markdown
-            jump(getAnchor())
+            // Only show anchored part (by filtering out markdown file first)
+            const anchor = getAnchor();
+            if(anchor){
+                jump(anchor)
+            }
+
             updateCodeHighlight()
         }
+
+
+        function filterSource(source, anchor){
+            let filteredSource = removeHeader(source);
+            if(anchor){
+                filteredSource = filterByAnchor(filteredSource, anchor);
+            }
+
+            // TODO filter by one tag - only if no anchor is set
+            return filteredSource;
+        }
+
+        function removeHeader(source) {
+            const pattern = /---/; // The pattern to match
+            const startIndex = source.search(pattern);
+            let filteredSource = source.slice(startIndex + 3);
+            return filteredSource;
+        }
+
+
+        /** Remove all markdown except the header region which was supplied as link anchor **/
+        function filterByAnchor(filteredSource, anchor) {
+            let anchoredRegion = [];
+            const lines = filteredSource.split("\n");
+            for (const line of lines) {
+                // Collecting remaining anchored region
+                if (anchoredRegion.length !== 0) {
+                    // Region finished
+                    if (!line.startsWith("#")) {
+                        anchoredRegion.push(line);
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
+
+                // Only looking for anchor start
+                if (!line.startsWith("#")) {
+                    continue;
+                }
+
+                // Link between anchor and markdown header
+                const htmlString = markdown.parse(line, {
+                    parseFlags: markdown.ParseFlags.DEFAULT | markdown.ParseFlags.NO_HTML,
+                });
+                const pattern = /id="([^"]+)"/;
+                const match = htmlString.match(pattern);
+                const id = match ? match[1] : null;
+
+                // Anchor start found
+                if (id === anchor) {
+                    anchoredRegion.push(line);
+                }
+
+            }
+            return anchoredRegion.join("\n");
+        }
+
 
         function updateCodeHighlight() {
             clearTimeout(hljsTimer)
@@ -168,10 +265,6 @@
         }
 
         update()
-
-// load the markdown module to make it playable in the browser console
-        console.log("markdown module API:", markdown)
-
     })</script>
 <link rel="stylesheet" href="highlight.css">
 </body>
