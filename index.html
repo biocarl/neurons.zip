@@ -1,15 +1,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>markdown-wasm demo</title>
+    <title>neurons.zip</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="https://rsms.me/raster/raster.css?v=8">
     <script type="text/javascript" src="markdown.js"></script>
     <script type="text/javascript" async src="highlight.js"></script>
-    <link rel=" apple-touch-icon-sizes="57x57" href="/favicon-57x57.png">
-
     <link rel="apple-touch-icon" sizes="60x60" href="/favicon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/favicon-72x72.png">
     <link rel="apple-touch-icon" sizes="76x76" href="/favicon-76x76.png">
@@ -33,19 +31,8 @@
             --fontSize: 14px;
         }
 
-        c.label {
-            font-weight: 500;
-            letter-spacing: 0;
-            color: #999;
-        }
-
-        c.input, c.output {
+        c.output {
             max-width: 50vw;
-        }
-
-        c.textarea {
-            display: flex;
-            justify-content: stretch;
         }
 
         c.textarea textarea {
@@ -90,14 +77,13 @@
         h5 > a.anchor:before,
         h6 > a.anchor:before {
             visibility: hidden;
-            position: absolute;
             opacity: 0.2;
             right: 0;
             top: 0;
-            width: 1em;
-            font-weight: 300;
+            font-size: 0.5em;
+            margin-left: 0.5em;
             line-height: inherit;
-            content: ""; /* U+E08F */
+            content: "🖇️"; /* U+E08F */
             text-align: center;
         }
 
@@ -153,6 +139,9 @@
                 parseFlags: markdown.ParseFlags.DEFAULT | markdown.ParseFlags.NO_HTML,
             })
             outputEl.innerHTML = html
+
+            // Update anchor based rendered markdown
+            jump(getAnchor())
             updateCodeHighlight()
         }
 
@@ -165,6 +154,18 @@
             document.querySelectorAll('pre code[class^="language-"]').forEach(block => {
                 hljs.highlightBlock(block)
             })
+        }
+
+        function getAnchor() {
+            return (document.URL.split('#').length > 1) ? document.URL.split('#')[1] : null;
+        }
+
+        function jump(anchor){
+            const anchoredElement = document.getElementById(anchor);
+            anchoredElement.parentElement.style.outline = "2px solid red";
+            anchoredElement.scrollIntoView();
+            // const top = anchoredElement.offsetTop;
+            // window.scrollTo(0, top);
         }
 
         update()
