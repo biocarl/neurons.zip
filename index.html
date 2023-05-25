@@ -162,10 +162,9 @@
 
         function jump(anchor){
             const anchoredElement = document.getElementById(anchor);
-            anchoredElement.parentElement.style.outline = "2px solid red";
-            anchoredElement.scrollIntoView();
-            // const top = anchoredElement.offsetTop;
-            // window.scrollTo(0, top);
+            anchoredElement.parentElement.style.outline = "5px dotted hotpink";
+            anchoredElement.parentElement.style.padding = "0.5em";
+            anchoredElement.scrollIntoView({ behavior: 'auto' /*or smooth*/, block: 'center' });
         }
 
         update()
