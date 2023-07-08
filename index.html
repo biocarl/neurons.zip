@@ -134,7 +134,7 @@
             // Local testing
             if(isLocal){
                 console.log("💾 Local development");
-                hostname = "biocarl.neurons.zip";
+                hostname = "dokku.biocarl.neurons.zip";
             }
 
             // slicing of @ (root+TDL)
@@ -150,12 +150,9 @@
                 return;
             }
 
-            if(subdomains.length !== 1){
-                console.error("Currently no tags supported, only username!");
-                return;
-            }
 
             const username = subdomains[subdomains.length -1];
+            console.log(username);
             let url = "https://raw.githubusercontent.com/"+username+"/til-biocarl/master/README.md"
 
             // Local testing
@@ -168,7 +165,7 @@
                 console.error("A repository of the name neurons.zip for user '"+ username+"' in [user].neurons.zip does not exist")
             }
 
-            const sourceToParse = filterSource(source, getAnchor());
+            const sourceToParse = filterSource(source, getAnchor(), getFirstTag(subdomains));
 
             html = markdown.parse(sourceToParse, {
                 parseFlags: markdown.ParseFlags.DEFAULT | markdown.ParseFlags.NO_HTML,
@@ -184,16 +181,53 @@
             updateCodeHighlight()
         }
 
+        function getFirstTag(subdomains){
+            if(subdomains.length === 2){
+                return subdomains[0];
+            }
+            return null;
+        }
 
-        function filterSource(source, anchor){
+        function filterSource(source, anchor, tag){
             let filteredSource = removeHeader(source);
             if(anchor){
                 filteredSource = filterByAnchor(filteredSource, anchor);
             }
 
+            if(tag){
+                console.log("Following tag was provided: " + tag);
+                filteredSource = filterByTag(filteredSource,tag);
+            }
+
             // TODO filter by one tag - only if no anchor is set
             return filteredSource;
         }
+
+        function filterByTag(source, tag){
+            return splitByEntries(source).filter(function (el) {
+                return el != null && el.parentCategory === tag;
+            }).map( (e) => e.original).join("");
+        }
+
+        function splitByEntries(source) {
+            return source.split(/^#/gm).map(parseMarkdownEntry);
+        }
+
+
+        // for later (only gets first entry) - .map(parseMarkdownEntry);
+        function parseMarkdownEntry(inputString) {
+            const regex = /(\d{2}\.\d{2}\.\d{4})\s(.*)/;
+            const matches = inputString.match(regex);
+
+            if (matches) {
+                const date = matches[1];
+                const parentCategory = matches[2].split(":")[0];
+                console.log('Date:', date);
+                console.log('Rest of the string:', parentCategory);
+                return { date: date, parentCategory: parentCategory, original: "#"+inputString}
+            }
+        }
+
 
         function removeHeader(source) {
             const pattern = /---/; // The pattern to match
