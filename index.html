@@ -134,11 +134,11 @@
             // Local testing
             if(isLocal){
                 console.log("💾 Local development");
-                hostname = "dokku.biocarl.neurons.zip";
+                hostname = "dokku-biocarl.neurons.zip";
             }
 
             // slicing of @ (root+TDL)
-            const subdomains = hostname.split('.').slice(0, -2);
+            let subdomains = hostname.split('.').slice(0, -2);
 
             if(subdomains.length === 0){
                 console.error("No user supplied!");
@@ -150,7 +150,9 @@
                 return;
             }
 
-
+            if(subdomains[subdomains.length -1].includes("-")){
+                subdomains = subdomains[subdomains.length -1].split("-");
+            }
             const username = subdomains[subdomains.length -1];
             console.log(username);
             let url = "https://raw.githubusercontent.com/"+username+"/til-biocarl/master/README.md"
