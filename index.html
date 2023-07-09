@@ -212,7 +212,7 @@
         }
 
         function splitByEntries(source) {
-            return source.split(/^#/gm).map(parseMarkdownEntry);
+            return source.split(/^#\s/gm).map(parseMarkdownEntry);
         }
 
 
@@ -226,7 +226,7 @@
                 const parentCategory = matches[2].split(":")[0];
                 console.log('Date:', date);
                 console.log('Rest of the string:', parentCategory);
-                return { date: date, parentCategory: parentCategory, original: "#"+inputString}
+                return { date: date, parentCategory: parentCategory, original: "# "+inputString}
             }
         }
 
